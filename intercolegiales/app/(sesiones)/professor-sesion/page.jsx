@@ -2,14 +2,23 @@ import Menu from "@/app/Components/Menu";
 
 export default function Page() {
     let options = [
-        "Completar tabla de alumnos escolar",
-        "Inscribir alumnos",
-        "Modificar planillas",
+        {
+            title: "Completar tabla de alumnos escolar",
+            link: "/professor-sesion/scholar-table",
+        },
+        {
+            title: "Inscribir alumnos",
+            link: "/professor-sesion/enroll-students",
+        },
+        {
+            title: "Modificar planillas",
+            link: "/professor-sesion/modify-sheets",
+        },
     ];
 
     return (
         <>
-            <Menu title={"Menu ultramegapiola"} options={options} />
+            <Menu title={"Menu Profesor"} options={options} />
         </>
     );
 }

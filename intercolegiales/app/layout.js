@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
                 <header>
                     <nav>
                         <img src="/head_intercolegiales.webp" />
-                        <span>Sesion</span>{" "}
+                        <span>Sesion X</span>
                         {/* Admin/Director/Delegado/Profesor  dependiendo de la sesion en la que se inicie */}
                     </nav>
                 </header>

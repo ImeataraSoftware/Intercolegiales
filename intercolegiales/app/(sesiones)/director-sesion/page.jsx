@@ -1,11 +1,20 @@
 import Menu from "@/app/Components/Menu";
 
 export default function Page() {
-    let options = ["Administrar profesores", "Ver datos globales"];
+    let options = [
+        {
+            title: "Administrar profesores",
+            link: "/director-sesion/admin-professors",
+        },
+        {
+            title: "Ver datos globales",
+            link: "/director-sesion/global-data",
+        },
+    ];
 
     return (
         <>
-            <Menu title={"Menu ultramegapiola"} options={options} />
+            <Menu title={"Menu Director"} options={options} />
         </>
     );
 }
