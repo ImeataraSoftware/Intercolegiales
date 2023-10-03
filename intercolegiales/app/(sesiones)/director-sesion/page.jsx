@@ -1,3 +1,11 @@
+import Menu from "@/app/Components/Menu";
+
 export default function Page() {
-    return <>menu de director</>;
+    let options = ["Administrar profesores", "Ver datos globales"];
+
+    return (
+        <>
+            <Menu title={"Menu ultramegapiola"} options={options} />
+        </>
+    );
 }
