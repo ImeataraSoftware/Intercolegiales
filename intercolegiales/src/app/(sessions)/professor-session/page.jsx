@@ -1,4 +1,4 @@
-import Menu from '@/app/components/Menu'
+import Menu from '@/src/components/Menu'
 
 export default function Page() {
   let options = [
