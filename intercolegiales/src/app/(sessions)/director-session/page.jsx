@@ -1,5 +1,6 @@
 import Menu from '@/src/components/Menu'
-export default function Page() {
+
+const Page = () => {
   let options = [
     {
       title: 'Administrar profesores',
@@ -17,3 +18,5 @@ export default function Page() {
     </>
   )
 }
+
+export default Page

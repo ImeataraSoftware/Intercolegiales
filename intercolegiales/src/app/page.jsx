@@ -1,7 +1,7 @@
-export default function Home() {
+const Home = () => {
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <main className="flex flex-col items-center justify-between bg-red-500 p-24">
         <h1>¡Bienvenido!</h1>
         <form>
           <input type="text" placeholder="Ingrese el usuario" />
@@ -12,3 +12,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home

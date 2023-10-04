@@ -1,7 +1,5 @@
-export default function Page() {
-  return (
-    <>
-      <h3>Datos globales</h3>
-    </>
-  )
+const Page = () => {
+  return <div>Page</div>
 }
+
+export default Page

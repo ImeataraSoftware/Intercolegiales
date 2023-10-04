@@ -1,3 +1,5 @@
-export default function Page() {
-  return <div>Administrar escuelas</div>
+const Page = () => {
+  return <div>Page</div>
 }
+
+export default Page
