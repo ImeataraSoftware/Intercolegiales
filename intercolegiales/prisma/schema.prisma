@@ -16,8 +16,3 @@ model User {
   email String  @unique
   name  String?
 }
-
-model Profile {
-  id  Int     @id @default(autoincrement())
-  bio String?
-}
