@@ -8,7 +8,7 @@ const Page = () => {
           <img src="/logo.png" alt="" className="h-12 w-auto" />
         </div>
         <div className="flex flex-grow items-center justify-center">
-          <div className="mx-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-md">
+          <div className="mx-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg">
             <div className="px-6 py-4">
               <div className="mx-auto flex justify-center">
                 <img className="h-12 w-auto sm:h-12" src="/sun.png" alt="" />
