@@ -12,8 +12,7 @@ const Page = () => {
 
                 <p className="mt-3 max-w-xl text-white">
                   Explora y administra los torneos intercolegiales de una manera sencilla y
-                  emocionante. Mantente al tanto de cada partido, resultados y estadísticas en
-                  tiempo real. ¡Únete a la emoción de los juegos entre colegios¡
+                  emocionante. ¡Únete a la emoción de los juegos intercolegiales¡
                 </p>
               </div>
             </div>
