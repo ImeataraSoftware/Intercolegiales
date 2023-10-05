@@ -12,7 +12,7 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <img src="/head_intercolegiales.webp" />
+        {/* <img src="/head_intercolegiales.webp" /> */}
         {children}
       </body>
     </html>
