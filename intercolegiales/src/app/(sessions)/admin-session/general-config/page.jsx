@@ -1,3 +1,5 @@
-export default function Page() {
-  return <h3>Configuración general</h3>
+const Page = () => {
+  return <div>Page</div>
 }
+
+export default Page

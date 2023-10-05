@@ -1,3 +1,5 @@
-export default function Page() {
-  return <h3>Administrar delegados</h3>
+const Page = () => {
+  return <div>Pepe</div>
 }
+
+export default Page
