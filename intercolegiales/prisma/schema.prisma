@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider              = "prisma-client-js"
+  autoCompleteRelations = true
 }
 
 datasource db {
@@ -11,8 +12,89 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Admin {
+  id        String   @id @default(uuid()) @db.Uuid
+  dni       Int      @unique
+  email     String   @unique
+  password  String
+  name      String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Delegate {
+  id        String   @id @default(uuid()) @db.Uuid
+  dni       Int      @unique
+  email     String   @unique
+  password  String
+  name      String?
+  phone     String?
+  City      City[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Director {
+  id        String   @id @default(uuid()) @db.Uuid
+  dni       Int      @unique
+  email     String   @unique
+  password  String
+  name      String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Teacher {
+  id        String   @id @default(uuid()) @db.Uuid
+  dni       Int      @unique
+  email     String   @unique
+  password  String
+  name      String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  School    School[]
+}
+
+model Student {
+  id           String   @id @default(uuid()) @db.Uuid
+  dni          Int      @unique
+  name         String
+  birthdayDate DateTime
+  School       School?  @relation(fields: [schoolId], references: [id])
+  schoolId     String?  @db.Uuid
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model School {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String    @unique
+  address   String?
+  Student   Student[]
+  Teacher   Teacher   @relation(fields: [teacherId], references: [id])
+  teacherId String    @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model City {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String   @unique
+  Delegate   Delegate @relation(fields: [delegateId], references: [id])
+  delegateId String   @db.Uuid
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Config {
+  id        String   @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Modality {
+  id String @id @default(uuid()) @db.Uuid
 }
