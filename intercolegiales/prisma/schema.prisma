@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file, 
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -28,8 +28,8 @@ model Delegate {
   dni       Int      @unique
   email     String   @unique
   password  String
-  name      String?
-  phone     String?
+  name      String
+  phone     String
   City      City[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -44,18 +44,60 @@ model Director {
   phone     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  School    School[]
 }
 
 model Teacher {
-  id        String   @id @default(uuid()) @db.Uuid
-  dni       Int      @unique
-  email     String   @unique
+  id        String               @id @default(uuid()) @db.Uuid
+  dni       Int                  @unique
+  email     String               @unique
   password  String
   name      String?
   phone     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  School    School[]
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  School    TeachersAndSchools[]
+  Sheets    Sheet[]
+}
+
+model School {
+  id         String               @id @default(uuid()) @db.Uuid
+  name       String               @unique
+  address    String?
+  Student    Student[]
+  Teachers   TeachersAndSchools[]
+  City       City                 @relation(fields: [cityId], references: [id])
+  cityId     String               @db.Uuid
+  Director   Director             @relation(fields: [directorId], references: [id])
+  directorId String               @db.Uuid
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+}
+
+model TeachersAndSchools {
+  Teacher    Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId  String   @db.Uuid
+  School     School   @relation(fields: [schoolId], references: [id])
+  schoolId   String   @db.Uuid
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([teacherId, schoolId])
+}
+
+model Sheet {
+  id String @id @default(uuid()) @db.Uuid
+
+  Teacher      Teacher     @relation(fields: [teacherId], references: [id])
+  teacherId    String      @db.Uuid
+  Discipline   Discipline? @relation(fields: [disciplineId], references: [id])
+  disciplineId String?     @db.Uuid
+  Categories   Categories? @relation(fields: [categoriesId], references: [id])
+  categoriesId String?     @db.Uuid
+  Branches     Branches?   @relation(fields: [branchesId], references: [id])
+  branchesId   String?     @db.Uuid
+  Student      Student?    @relation(fields: [studentId], references: [id])
+  studentId    String?     @db.Uuid
 }
 
 model Student {
@@ -63,21 +105,11 @@ model Student {
   dni          Int      @unique
   name         String
   birthdayDate DateTime
-  School       School?  @relation(fields: [schoolId], references: [id])
-  schoolId     String?  @db.Uuid
+  School       School   @relation(fields: [schoolId], references: [id])
+  schoolId     String   @db.Uuid
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-}
-
-model School {
-  id        String    @id @default(uuid()) @db.Uuid
-  name      String    @unique
-  address   String?
-  Student   Student[]
-  Teacher   Teacher   @relation(fields: [teacherId], references: [id])
-  teacherId String    @db.Uuid
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  Sheets       Sheet[]
 }
 
 model City {
@@ -85,16 +117,68 @@ model City {
   name       String   @unique
   Delegate   Delegate @relation(fields: [delegateId], references: [id])
   delegateId String   @db.Uuid
+  postalCode Int?
+  Schools    School[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
 
-model Config {
-  id        String   @id @default(uuid()) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Discipline {
+  id          String                    @id @default(uuid()) @db.Uuid
+  name        String
+  maxStudents Int
+  mandatory   Boolean
+  limiting    Boolean
+  Sheets      Sheet[]
+  Categories  DisciplineAndCategories[]
+  Branches    DisciplineAndBranches[]
 }
 
-model Modality {
-  id String @id @default(uuid()) @db.Uuid
+model Categories {
+  id          String                    @id @default(uuid()) @db.Uuid
+  sub         Int
+  createdAt   DateTime                  @default(now())
+  Config      Config                    @relation(fields: [configId], references: [id])
+  configId    String                    @db.Uuid
+  Sheets      Sheet[]
+  Disciplines DisciplineAndCategories[]
+}
+
+model DisciplineAndCategories {
+  Discipline   Discipline @relation(fields: [disciplineId], references: [id])
+  disciplineId String     @db.Uuid
+  Categories   Categories @relation(fields: [categoriesId], references: [id])
+  categoriesId String     @db.Uuid
+
+  @@id([disciplineId, categoriesId])
+}
+
+model Branches {
+  id          String                  @id @default(uuid()) @db.Uuid
+  name        String
+  createdAt   DateTime                @default(now())
+  Config      Config                  @relation(fields: [configId], references: [id])
+  configId    String                  @db.Uuid
+  Sheets      Sheet[]
+  Disciplines DisciplineAndBranches[]
+}
+
+model DisciplineAndBranches {
+  Discipline   Discipline @relation(fields: [disciplineId], references: [id])
+  disciplineId String     @db.Uuid
+  Branches     Branches   @relation(fields: [branchesId], references: [id])
+  branchesId   String     @db.Uuid
+
+  @@id([disciplineId, branchesId])
+}
+
+model Config {
+  id                String       @id @default(uuid()) @db.Uuid
+  startsInscription DateTime
+  endsInscription   DateTime
+  Categories        Categories[]
+  BranchesId        Branches[]
+  seguroLink        String
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 }
