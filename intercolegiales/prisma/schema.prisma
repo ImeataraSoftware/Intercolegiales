@@ -123,15 +123,24 @@ model City {
   updatedAt  DateTime @updatedAt
 }
 
+model SubDisciplines {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String
+  maxStudents  Int?
+  Discipline   Discipline? @relation(fields: [disciplineId], references: [id])
+  disciplineId String?     @db.Uuid
+}
+
 model Discipline {
-  id          String                    @id @default(uuid()) @db.Uuid
-  name        String
-  maxStudents Int
-  mandatory   Boolean
-  limiting    Boolean
-  Sheets      Sheet[]
-  Categories  DisciplineAndCategories[]
-  Branches    DisciplineAndBranches[]
+  id             String                    @id @default(uuid()) @db.Uuid
+  name           String
+  maxStudents    Int
+  mandatory      Boolean
+  limiting       Boolean
+  Sheets         Sheet[]
+  Categories     DisciplineAndCategories[]
+  Branches       DisciplineAndBranches[]
+  SubDisciplines SubDisciplines[]
 }
 
 model Categories {

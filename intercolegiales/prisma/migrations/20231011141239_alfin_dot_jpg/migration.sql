@@ -1,46 +1,71 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Admin" (
+    "id" UUID NOT NULL,
+    "dni" INTEGER NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
+    "phone" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-  - You are about to drop the column `teacherId` on the `School` table. All the data in the column will be lost.
-  - You are about to drop the `Modality` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `endsInscription` to the `Config` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `seguroLink` to the `Config` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `startsInscription` to the `Config` table without a default value. This is not possible if the table is not empty.
-  - Made the column `name` on table `Delegate` required. This step will fail if there are existing NULL values in that column.
-  - Made the column `phone` on table `Delegate` required. This step will fail if there are existing NULL values in that column.
-  - Added the required column `cityId` to the `School` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `directorId` to the `School` table without a default value. This is not possible if the table is not empty.
-  - Made the column `schoolId` on table `Student` required. This step will fail if there are existing NULL values in that column.
+    CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
+);
 
-*/
--- DropForeignKey
-ALTER TABLE "School" DROP CONSTRAINT "School_teacherId_fkey";
+-- CreateTable
+CREATE TABLE "Delegate" (
+    "id" UUID NOT NULL,
+    "dni" INTEGER NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- DropForeignKey
-ALTER TABLE "Student" DROP CONSTRAINT "Student_schoolId_fkey";
+    CONSTRAINT "Delegate_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "City" ADD COLUMN     "postalCode" INTEGER;
+-- CreateTable
+CREATE TABLE "Director" (
+    "id" UUID NOT NULL,
+    "dni" INTEGER NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
+    "phone" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- AlterTable
-ALTER TABLE "Config" ADD COLUMN     "endsInscription" TIMESTAMP(3) NOT NULL,
-ADD COLUMN     "seguroLink" TEXT NOT NULL,
-ADD COLUMN     "startsInscription" TIMESTAMP(3) NOT NULL;
+    CONSTRAINT "Director_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "Delegate" ALTER COLUMN "name" SET NOT NULL,
-ALTER COLUMN "phone" SET NOT NULL;
+-- CreateTable
+CREATE TABLE "Teacher" (
+    "id" UUID NOT NULL,
+    "dni" INTEGER NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
+    "phone" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- AlterTable
-ALTER TABLE "School" DROP COLUMN "teacherId",
-ADD COLUMN     "cityId" UUID NOT NULL,
-ADD COLUMN     "directorId" UUID NOT NULL;
+    CONSTRAINT "Teacher_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "Student" ALTER COLUMN "schoolId" SET NOT NULL;
+-- CreateTable
+CREATE TABLE "School" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "address" TEXT,
+    "cityId" UUID NOT NULL,
+    "directorId" UUID NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- DropTable
-DROP TABLE "Modality";
+    CONSTRAINT "School_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "TeachersAndSchools" (
@@ -62,6 +87,41 @@ CREATE TABLE "Sheet" (
     "studentId" UUID,
 
     CONSTRAINT "Sheet_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Student" (
+    "id" UUID NOT NULL,
+    "dni" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "birthdayDate" TIMESTAMP(3) NOT NULL,
+    "schoolId" UUID NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "City" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "delegateId" UUID NOT NULL,
+    "postalCode" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "City_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SubDisciplines" (
+    "id" UUID NOT NULL,
+    "name" TEXT NOT NULL,
+    "maxStudents" INTEGER,
+    "disciplineId" UUID,
+
+    CONSTRAINT "SubDisciplines_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -111,6 +171,51 @@ CREATE TABLE "DisciplineAndBranches" (
     CONSTRAINT "DisciplineAndBranches_pkey" PRIMARY KEY ("disciplineId","branchesId")
 );
 
+-- CreateTable
+CREATE TABLE "Config" (
+    "id" UUID NOT NULL,
+    "startsInscription" TIMESTAMP(3) NOT NULL,
+    "endsInscription" TIMESTAMP(3) NOT NULL,
+    "seguroLink" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Config_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Admin_dni_key" ON "Admin"("dni");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Delegate_dni_key" ON "Delegate"("dni");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Delegate_email_key" ON "Delegate"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Director_dni_key" ON "Director"("dni");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Director_email_key" ON "Director"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Teacher_dni_key" ON "Teacher"("dni");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Teacher_email_key" ON "Teacher"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "School_name_key" ON "School"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Student_dni_key" ON "Student"("dni");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "City_name_key" ON "City"("name");
+
 -- AddForeignKey
 ALTER TABLE "School" ADD CONSTRAINT "School_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES "City"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -140,6 +245,12 @@ ALTER TABLE "Sheet" ADD CONSTRAINT "Sheet_studentId_fkey" FOREIGN KEY ("studentI
 
 -- AddForeignKey
 ALTER TABLE "Student" ADD CONSTRAINT "Student_schoolId_fkey" FOREIGN KEY ("schoolId") REFERENCES "School"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "City" ADD CONSTRAINT "City_delegateId_fkey" FOREIGN KEY ("delegateId") REFERENCES "Delegate"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SubDisciplines" ADD CONSTRAINT "SubDisciplines_disciplineId_fkey" FOREIGN KEY ("disciplineId") REFERENCES "Discipline"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Categories" ADD CONSTRAINT "Categories_configId_fkey" FOREIGN KEY ("configId") REFERENCES "Config"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
